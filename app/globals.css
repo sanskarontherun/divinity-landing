@@ -1,0 +1,80 @@
+:root {
+  /* Brand tokens — carried over from the Divinity app itself */
+  --bg: #1c1611;
+  --surface: #241d16;
+  --surface-2: #2e251b;
+  --line: #4a3c2a;
+  --text: #ece4d3;
+  --muted: #a08f74;
+  --amber: #c9963c;
+  --amber-dim: #8a6526;
+  --amber-bright: #f0c374;
+  --ember: #b5563a;
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-body: var(--font-inter), -apple-system, sans-serif;
+  --font-mono: var(--font-plex-mono), monospace;
+
+  --chapter-gap: clamp(96px, 16vw, 240px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--amber-dim);
+  color: var(--bg);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.chapter {
+  padding: var(--chapter-gap) clamp(24px, 6vw, 96px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.rule {
+  height: 1px;
+  background: var(--line);
+  border: none;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
