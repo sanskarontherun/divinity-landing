@@ -36,6 +36,7 @@ export default function Founder() {
   return (
     <section id="founder" className="chapter">
       <div
+        ref={ref}
         style={{
           display: "flex",
           flexWrap: "wrap",
@@ -47,7 +48,6 @@ export default function Founder() {
         }}
       >
         <div
-          ref={photoRef}
           className="founder-photo-mask"
           style={{
             width: 160,
