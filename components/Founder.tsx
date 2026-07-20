@@ -36,7 +36,6 @@ export default function Founder() {
   return (
     <section id="founder" className="chapter">
       <div
-        ref={ref}
         style={{
           display: "flex",
           flexWrap: "wrap",
