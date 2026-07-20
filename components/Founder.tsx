@@ -86,13 +86,7 @@ export default function Founder() {
             beat polish here.
           */}
           <p style={{ color: "var(--muted)", fontSize: 16, lineHeight: 1.75 }}>
-            I used to buy books faster than I could read them — papers
-            starred and never opened, a library that turned into a graveyard
-            of good intentions. I didn&apos;t need less to read. I needed
-            another way in. Divinity started as a way to hear my own backlog
-            on commutes and runs, in a voice I didn&apos;t mind spending
-            hours with. I built it so the things you meant to get to don&apos;t
-            just sit there — they get finished, in your ear, at your pace.
+            I am gonna be one of the greates , mark my words.  
           </p>
         </div>
       </div>
