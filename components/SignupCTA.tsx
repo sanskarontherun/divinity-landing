@@ -1,5 +1,5 @@
 "use client";
-
+import { supabase } from "@/lib/supabase";
 import { useState } from "react";
 import { useScrollReveal, useMagnetic } from "@/lib/useScrollReveal";
 import FlameMark from "./FlameMark";
@@ -12,16 +12,26 @@ export default function SignupCTA() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (status === "pending") return;
-    setStatus("pending");
-    // TODO: wire this to a real endpoint — a waitlist tool (e.g. ConvertKit,
-    // Mailchimp) if pre-launch, or your actual signup/auth API if the app is
-    // live. The brief pending state below is just perceived-affordance UI
-    // sugar; swap the timeout for the real request.
-    window.setTimeout(() => setStatus("submitted"), 700);
+  async function handleSubmit(e: React.FormEvent) {
+  e.preventDefault();
+
+  if (status === "pending") return;
+
+  setStatus("pending");
+
+  const { error } = await supabase
+    .from("waitlist")
+    .insert([{ email }]);
+
+  if (error) {
+    alert(error.message);
+    setStatus("idle");
+    return;
   }
+
+  setStatus("submitted");
+  setEmail("");
+}
 
   return (
     <section id="begin" className="chapter" style={{ textAlign: "center" }}>
