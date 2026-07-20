@@ -58,13 +58,22 @@ export default function Founder() {
             filter: "grayscale(0.3) sepia(0.15)",
           }}
         >
+        
           <Image
-            src="/images/founder.jpg"
-            alt="Sanskar Singh, founder of Divinity"
-            width={320}
-            height={320}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
+  src="/images/founder.jpg"
+  alt="Sanskar Singh, founder of Divinity"
+  width={320}
+  height={320}
+  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+  // ---------- DEBUG ADDITIONS START HERE ----------
+  onError={(e) => {
+    console.error("Image failed to load. Check path:", e.currentTarget.src);
+    // Optional: Show a fallback text/color so you know it's a path issue
+    e.currentTarget.style.backgroundColor = "#ffcccc";
+  }}
+  onLoad={() => console.log("Image loaded successfully!")}
+  // ---------- DEBUG ADDITIONS END HERE ----------
+/>
         </div>
 
         <div ref={textRef} style={{ maxWidth: 480 }}>
