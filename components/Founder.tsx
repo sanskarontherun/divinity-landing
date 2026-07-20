@@ -9,30 +9,27 @@ export default function Founder() {
   const photoRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const el = photoRef.current;
-    if (!el) return;
+  const el = photoRef.current;
+  if (!el) return;
 
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (reducedMotion) {
-      el.classList.add("is-revealed");
-      return;
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        el.classList.add("is-revealed");
+        observer.disconnect();
+      }
+    },
+    {
+      threshold: 0.05,
+      rootMargin: "100px 0px",
     }
+  );
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add("is-revealed");
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.4 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  observer.observe(el);
 
+  return () => observer.disconnect();
+}, []);
+  
   return (
     <section id="founder" className="chapter">
       <div
