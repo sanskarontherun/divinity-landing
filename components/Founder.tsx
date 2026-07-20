@@ -1,15 +1,41 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 
 export default function Founder() {
-  const ref = useScrollReveal<HTMLDivElement>();
+  const textRef = useScrollReveal<HTMLDivElement>({ y: 24 });
+  const photoRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = photoRef.current;
+    if (!el) return;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (reducedMotion) {
+      el.classList.add("is-revealed");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("is-revealed");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section className="chapter">
+    <section id="founder" className="chapter">
       <div
-        ref={ref}
         style={{
           display: "flex",
           flexWrap: "wrap",
@@ -21,6 +47,8 @@ export default function Founder() {
         }}
       >
         <div
+          ref={photoRef}
+          className="founder-photo-mask"
           style={{
             width: 160,
             height: 160,
@@ -40,7 +68,7 @@ export default function Founder() {
           />
         </div>
 
-        <div style={{ maxWidth: 480 }}>
+        <div ref={textRef} style={{ maxWidth: 480 }}>
           <span className="eyebrow">IV. The Founder</span>
           <h2
             style={{
@@ -53,13 +81,18 @@ export default function Founder() {
             Sanskar Singh
           </h2>
           {/*
-            PLACEHOLDER — replace with Sanskar's real words on why Divinity
-            exists. Two to four sentences, first person, plain and specific
-            beats polished and vague.
+            DRAFT — written to match the product and brand voice, but it's
+            a draft. Swap in whatever's actually true for you; specifics
+            beat polish here.
           */}
           <p style={{ color: "var(--muted)", fontSize: 16, lineHeight: 1.75 }}>
-            [Add a few sentences here, in your own words — what you couldn&apos;t
-            finish reading, and why you built a way to listen to it instead.]
+            I used to buy books faster than I could read them — papers
+            starred and never opened, a library that turned into a graveyard
+            of good intentions. I didn&apos;t need less to read. I needed
+            another way in. Divinity started as a way to hear my own backlog
+            on commutes and runs, in a voice I didn&apos;t mind spending
+            hours with. I built it so the things you meant to get to don&apos;t
+            just sit there — they get finished, in your ear, at your pace.
           </p>
         </div>
       </div>

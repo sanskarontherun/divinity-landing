@@ -1,6 +1,6 @@
 "use client";
 
-import { useScrollReveal } from "@/lib/useScrollReveal";
+import { useScrollReveal, useStaggerReveal } from "@/lib/useScrollReveal";
 
 const FEATURES = [
   {
@@ -22,44 +22,46 @@ const FEATURES = [
 ];
 
 export default function Features() {
-  const ref = useScrollReveal<HTMLDivElement>();
+  const eyebrowRef = useScrollReveal<HTMLSpanElement>({ y: 12 });
+  const gridRef = useStaggerReveal<HTMLDivElement>({ stagger: 0.1 });
 
   return (
-    <section className="chapter">
-      <div ref={ref}>
-        <span className="eyebrow" style={{ display: "block", textAlign: "center" }}>
-          III. What It Does
-        </span>
+    <section id="features" className="chapter">
+      <span
+        ref={eyebrowRef}
+        className="eyebrow"
+        style={{ display: "block", textAlign: "center" }}
+      >
+        III. What It Does
+      </span>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: "1px",
-            background: "var(--line)",
-            marginTop: 40,
-            border: "1px solid var(--line)",
-          }}
-        >
-          {FEATURES.map((f) => (
-            <div key={f.title} style={{ background: "var(--bg)", padding: "32px 28px" }}>
-              <h3
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 500,
-                  fontSize: 20,
-                  margin: "0 0 12px",
-                  color: "var(--amber)",
-                }}
-              >
-                {f.title}
-              </h3>
-              <p style={{ color: "var(--muted)", fontSize: 15, lineHeight: 1.65, margin: 0 }}>
-                {f.body}
-              </p>
-            </div>
-          ))}
-        </div>
+      <div
+        ref={gridRef}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: 18,
+          marginTop: 44,
+        }}
+      >
+        {FEATURES.map((f) => (
+          <div key={f.title} className="glass-panel" style={{ padding: "32px 28px" }}>
+            <h3
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 500,
+                fontSize: 20,
+                margin: "0 0 12px",
+                color: "var(--amber)",
+              }}
+            >
+              {f.title}
+            </h3>
+            <p style={{ color: "var(--muted)", fontSize: 15, lineHeight: 1.65, margin: 0 }}>
+              {f.body}
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   );

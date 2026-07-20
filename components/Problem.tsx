@@ -3,10 +3,10 @@
 import { useScrollReveal } from "@/lib/useScrollReveal";
 
 export default function Problem() {
-  const ref = useScrollReveal<HTMLDivElement>();
+  const ref = useScrollReveal<HTMLDivElement>({ blur: true });
 
   return (
-    <section className="chapter" style={{ textAlign: "center" }}>
+    <section id="problem" className="chapter" style={{ textAlign: "center" }}>
       <div ref={ref}>
         <span className="eyebrow">I. The Problem</span>
         <p

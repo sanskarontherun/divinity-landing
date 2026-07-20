@@ -3,7 +3,9 @@ import FlameMark from "./FlameMark";
 export default function Footer() {
   return (
     <footer style={{ textAlign: "center", padding: "80px 24px 48px" }}>
-      <FlameMark size={26} />
+      <div className="ember-breathe" style={{ display: "inline-block" }}>
+        <FlameMark size={26} />
+      </div>
       <p
         style={{
           fontFamily: "var(--font-display)",

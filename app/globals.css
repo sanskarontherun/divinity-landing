@@ -1,5 +1,5 @@
 :root {
-  /* Brand tokens — carried over from the Divinity app itself */
+  /* Brand tokens — carried over from the Divinity app itself. Untouched. */
   --bg: #1c1611;
   --surface: #241d16;
   --surface-2: #2e251b;
@@ -16,6 +16,11 @@
   --font-mono: var(--font-plex-mono), monospace;
 
   --chapter-gap: clamp(96px, 16vw, 240px);
+
+  /* New, in service of the deeper pass — same family, more depth */
+  --glass-surface: rgba(46, 37, 27, 0.42);
+  --glass-border: rgba(201, 150, 60, 0.16);
+  --shadow-ember: 0 30px 80px -30px rgba(0, 0, 0, 0.65);
 }
 
 * {
@@ -24,6 +29,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 84px;
   background: var(--bg);
 }
 
@@ -33,6 +39,7 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  position: relative;
 }
 
 ::selection {
@@ -49,6 +56,20 @@ button {
   font-family: inherit;
 }
 
+a {
+  color: inherit;
+}
+
+/* Accessible focus — visible everywhere, invisible to mouse clicks */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -58,9 +79,27 @@ button {
 }
 
 .chapter {
+  position: relative;
   padding: var(--chapter-gap) clamp(24px, 6vw, 96px);
   max-width: 1200px;
   margin: 0 auto;
+}
+
+/* Soft top-of-chapter wash — a quiet "page turn" cue between sections,
+   instead of a hard line everywhere. */
+.chapter::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(
+    to bottom,
+    rgba(201, 150, 60, 0.05),
+    transparent
+  );
+  pointer-events: none;
 }
 
 .rule {
@@ -70,11 +109,156 @@ button {
   margin: 0;
 }
 
+/* ---------- Word-reveal masking ---------- */
+/* .split-word masks the vertical travel of .split-word-inner so words
+   rise out of a clean line rather than just fading in place. */
+.split-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+}
+.split-word-inner {
+  display: inline-block;
+  will-change: transform, filter, opacity;
+}
+
+/* ---------- Glass surface (Features) ---------- */
+.glass-panel {
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 14px;
+  transition: border-color 0.4s ease, transform 0.4s ease,
+    box-shadow 0.4s ease;
+}
+.glass-panel:hover {
+  border-color: rgba(201, 150, 60, 0.4);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-ember);
+}
+
+/* ---------- Grain overlay ---------- */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+
+/* ---------- Magnetic CTA ---------- */
+.magnetic-cta {
+  display: inline-block;
+  will-change: transform;
+}
+.magnetic-cta:hover {
+  border-color: var(--amber) !important;
+  background: rgba(201, 150, 60, 0.1);
+}
+
+/* ---------- Founder photo reveal ---------- */
+.founder-photo-mask {
+  clip-path: circle(0% at 50% 50%);
+}
+.founder-photo-mask.is-revealed {
+  clip-path: circle(75% at 50% 50%);
+  transition: clip-path 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Breathing flame (Footer) ---------- */
+@keyframes emberBreath {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px rgba(201, 150, 60, 0.25));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(201, 150, 60, 0.55));
+    transform: scale(1.035);
+  }
+}
+.ember-breathe {
+  animation: emberBreath 5.5s ease-in-out infinite;
+}
+
+/* ---------- Chapter nav ---------- */
+.chapternav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 16px clamp(16px, 5vw, 40px);
+  background: rgba(28, 22, 17, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--glass-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.chapternav::-webkit-scrollbar {
+  display: none;
+}
+.chapternav.is-hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+.chapternav-brand {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--amber-bright);
+  text-decoration: none;
+  white-space: nowrap;
+  margin-right: 22px;
+  flex-shrink: 0;
+}
+.chapternav-link {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 7px 12px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  transition: color 0.3s ease, background 0.3s ease;
+}
+.chapternav-link:hover {
+  color: var(--text);
+  background: rgba(201, 150, 60, 0.08);
+}
+.chapternav-link.is-active {
+  color: var(--amber-bright);
+  background: rgba(201, 150, 60, 0.14);
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .grain-overlay {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .glass-panel:hover {
+    transform: none;
   }
 }
